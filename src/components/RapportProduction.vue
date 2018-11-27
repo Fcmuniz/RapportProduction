@@ -2,32 +2,18 @@
    <div id="app" style="padding:20px;margin-top:50px">    
             <v-app id="inspire" style="  width:100%;">
                <div style="width:200px; margin-left:400px;margin-top:0px;position:absolute">
-                  <table>
-                     <tr>
-                        <th>  <label > Machine:  </label> </th>
-                        <th>
-                           <v-select
-                              v-model="Machine"
-                              :items="itemsMachine"
-                              item-text="MachineID"
-                              item-value="MachineID"
-                              label="Select"
-                              solo
-                              ></v-select>
-                        </th>
-                     </tr>
-                  </table>
+                
                </div>
                <div>
                   <v-btn color="info" slot="activator" v-on:click="Ative(show = !show)" dark class="mb-2">Ajouter un nouveau </v-btn>
                   <div style="margin-left:80%;width:250px;margin-top:-53px">
-                     <v-text-field label="Recherche" class="form-control medium"  v-model="search"></v-text-field>
+                     <v-text-field label="Recherche" class="form-control medium"  append-icon="search"  single-line
+        v-model="search"></v-text-field>
                   </div>
                </div>
                <v-data-table :headers="headers"
                   :items="values"
-                  :search="search"
-                  :rows-per-page-items="[10,20]">
+                  :search="search">
                   <template slot="items" slot-scope="props" >
                      <td>{{ props.item.Date }}</td>
                      <td>{{ props.item.MachineID }}</td>
@@ -36,11 +22,11 @@
                      <td>
                         <v-icon small
                            class="mr-2"
-                           v-on:click="editItem(props.item,1)">
+                           v-on:click="editItem(props.item.id,1)">
                            edit
                         </v-icon>
                         <v-icon small
-                           v-on:click="deleteItem(props.item,0)">
+                           v-on:click="deleteItem(props.item.id,0)">
                            delete
                         </v-icon>
                      </td>
@@ -189,13 +175,10 @@
    
         editItem(item,valeur) {
            console.log("Alo")
-            this.$router.push({ name: 'RapportProductionAction', params: { item: 123 }})
+            this.$router.push({ name: 'RapportProductionAction', params: { item: item }})
            this.show = false;   
-           this.inspire = false;      
-         //  this.editedIndex = this.values.indexOf(item)
-         //  this.editedItem = Object.assign({}, item)     
-         //  this.seenSave =false
-         //  this.seenUpdate=true
+           this.inspire = false;     
+       
         },
     
       

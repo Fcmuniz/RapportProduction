@@ -136,6 +136,9 @@
                      </v-flex>
                      <v-flex xs12 sm3>  
                      </v-flex>
+
+                     <skuComponent> </skuComponent>
+
                      <v-flex xs12 sm2>  
                         SKU 1                             
                      </v-flex>
@@ -1413,10 +1416,8 @@
             
            
           ]
-        }, 
-
-        blurPerson(){
-           
+        },
+        blurPerson(){           
          console.log(rapportProduction.Nemployee,"opa!")
         },
        changeMachine(a) {
