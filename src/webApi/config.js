@@ -1,5 +1,5 @@
 export default {
   getAddress() {
-    return "http://localhost:8073";
+    return "http://localhost:53947/api/";
   }
 };

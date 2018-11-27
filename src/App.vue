@@ -3,22 +3,15 @@
    
 
     <v-content>
-      <RapportProductionAction/>
-    
+      <router-view/>    
     </v-content>
   </v-app>
 </template>
 
 <script>
-import RapportProduction from './components/RapportProduction'
-import RapportProductionAction from './components/RapportProductionAction'
-
 
 export default {
   name: 'App',
-  components: {
-    RapportProduction,RapportProductionAction
-  },
   data () {
     return {
       //

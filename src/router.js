@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import RapportProduction from './views/RapportProduction.vue'
-import RapportProductionAction from '@/components/Teste/teste'
+import RapportProduction from '@/components/RapportProduction'
+import RapportProductionAction from '@/components/RapportProductionAction'
 
 
 Vue.use(Router)
@@ -11,7 +11,7 @@ export default new Router({
   base: process.env.BASE_URL,
   routes: [
     {
-      path: '/',
+      path: '/RapportProduction',
       name: 'RapportProduction',
       component: RapportProduction
     },

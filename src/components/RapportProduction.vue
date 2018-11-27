@@ -7,10 +7,10 @@
                         <th>  <label > Machine:  </label> </th>
                         <th>
                            <v-select
-                              v-model="select"
-                              :items="items"
-                              item-text="name"
-                              item-value="code"
+                              v-model="Machine"
+                              :items="itemsMachine"
+                              item-text="MachineID"
+                              item-value="MachineID"
                               label="Select"
                               solo
                               ></v-select>
@@ -30,9 +30,9 @@
                   :rows-per-page-items="[10,20]">
                   <template slot="items" slot-scope="props" >
                      <td>{{ props.item.Date }}</td>
-                     <td>{{ props.item.Machine }}</td>
+                     <td>{{ props.item.MachineID }}</td>
                      <td class="text-xs-center">{{ props.item.Shift }}</td>
-                     <td class="text-xs-center">{{ props.item.Efficiency }}</td>
+                     <td class="text-xs-center">{{ props.item.Efficacite }}</td>
                      <td>
                         <v-icon small
                            class="mr-2"
@@ -76,17 +76,19 @@
 </style>
 <script>
    //  import messes from '@/webapi/Messes.js';
-    
+      import raportProduction from '@/webApi/RapportProductionAPI.js';
      export default {
     
       data: () => ({
+         Machine:null,
         menuDate:false,
         show: true,
         valid: true,
         btnDisable: true,
         search: '',      
         seenSave:true ,
-        seenUpdate:false,     
+        seenUpdate:false,  
+        itemsMachine:[],   
         headers: [
           { text: 'Date', value: 'Date',  class: 'toptable' },
           { text: 'Machine', value: 'Machine', class: 'toptable' },
@@ -102,49 +104,65 @@
            { code: '7', name: '221' },
            { code: '8', name: '341' },
          ],   
-              
+          values: [],     
         editedIndex: -1,
        
     
-      }),  
+      }), 
+         mounted: function () {
+     
+            this.getMachine(); 
+     },
       created() {
-        this.initialize( )
+      this.listRaports( )
       },
-      methods: {         
-        initialize() {     
-          this.values = [
-            {
-              Date: '16/09/2018',
-              Machine: 241,
-              Shift: '7 - 19',
-              Efficiency: '41%',              
-            },
-            {
-              Date: '16/09/2018',
-              Machine: 241,
-              Shift: '19 - 7',
-              Efficiency: '83%',
-            },
-            {
-              Date: '16/09/2018',
-              Machine: 215,
-              Shift: '7 - 15',
-              Efficiency: '74%',             
-            },
-            {
-              Date: '16/09/2018',
-              Machine: 215,
-              Shift: '15 - 23',
-              Efficiency: '53%',             
-            },
-            {
-              Date: '16/09/2018',
-              Machine: 215,
-              Shift: '23 - 7',
-              Efficiency: '36%',             
-            },
-          ]
-        }, 
+      methods: {       
+         listRaports() {
+          let self = this
+          raportProduction.listRaport().then(function(res) {
+          self.values = res;
+          console.log(res,"oi")
+        })
+      },  
+         getMachine() {
+           let self = this;
+           raportProduction.listRaport().then(function(res) {
+          self.itemsMachine = res;
+        })},  
+      //   initialize() {     
+         //  this.values = [
+         //    {
+         //      Date: '16/09/2018',
+         //      Machine: 241,
+         //      Shift: '7 - 19',
+         //      Efficiency: '41%',              
+         //    },
+         //    {
+         //      Date: '16/09/2018',
+         //      Machine: 241,
+         //      Shift: '19 - 7',
+         //      Efficiency: '83%',
+         //    },
+         //    {
+         //      Date: '16/09/2018',
+         //      Machine: 215,
+         //      Shift: '7 - 15',
+         //      Efficiency: '74%',             
+         //    },
+         //    {
+         //      Date: '16/09/2018',
+         //      Machine: 215,
+         //      Shift: '15 - 23',
+         //      Efficiency: '53%',             
+         //    },
+         //    {
+         //      Date: '16/09/2018',
+         //      Machine: 215,
+         //      Shift: '23 - 7',
+         //      Efficiency: '36%',             
+         //    },
+         //  ]
+          //   }, 
          //  clear () {
          //    this.$refs.form.reset()
          //  },

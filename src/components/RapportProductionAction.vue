@@ -10,8 +10,11 @@
                         <v-autocomplete clearable v-model="rapportProduction.Nemployee"                                 
                            required
                            append-icon="search"
+                           :items="person"
+                           :search-input.sync="searchPerson"
+                           @blur.native="blurPerson()"                         
                            hide-no-data hide-selected
-                           item-text="Nome"
+                           item-text="NomeFormart"
                            item-value="Id"
                            label="No employé"
                            solo
@@ -43,7 +46,7 @@
                         </v-flex>
                      </v-flex>
                      <v-flex xs12 sm1>
-                        <v-btn color="info" slot="activator" style="width:10px"  dark class="mb-2">+</v-btn>
+                        <v-btn color="info" slot="activator" style="width:10px"  dark class="mb-2" v-on:click="addPersonGrid(rapportProduction)" >+</v-btn>
                      </v-flex>
                      <v-flex xs12 ms8>
                         <v-data-table :headers="headers"
@@ -107,6 +110,7 @@
                            item-text="name"
                            item-value="code"
                            label="Machine"
+                           v-on:change="changeMachine(`${items.code}`)"
                            solo
                            ></v-select>
                      </v-flex>
@@ -1321,14 +1325,17 @@
 </style>
 <script>
    //  import messes from '@/webapi/Messes.js';
-    
+      import raportProduction from '@/webApi/RapportProductionAPI.js';
      export default {    
       data: () => ({       
         valid: true,
         search: '',
         dialog: false,
         btnDisable: true,
+        searchPerson:'',
+        person:[],
         editedItem:'',
+        panel:null,
         rapportProduction:[],
          headers: [
           { text: "Nom de l'employé", value: 'NameEmployee',  class: 'toptable' },
@@ -1350,14 +1357,21 @@
          ],
        
       }),
-   
+      watch: {
+             searchPerson(val) {
+        if(val == null || val == "")
+          this.person = [];
+        if(this.person.length > 0) return
+          this.getPerson(val);
+      }
+      },
       computed: {
            formTitle() {
         return this.editedIndex === -1 ? 'New ' : 'Edit '
       }
        },
       created() {
-        this.initialize( )
+        this.initialize()
       },
       methods: {
         initialize() {  
@@ -1400,9 +1414,26 @@
            
           ]
         }, 
+
+        blurPerson(){
+           
+         console.log(rapportProduction.Nemployee,"opa!")
+        },
+       changeMachine(a) {
+        
+         console.log("Aqui")
+      },
          //  clear () {
          //    this.$refs.form.reset()
          //  },
+      addPersonGrid(rapportProduction){
+         console.log(rapportProduction,"aqui")        
+      },
+      getPerson(q) {
+         let self = this;
+            raportProduction.listPerson(q).then(function(res) {             
+            self.person = res;            
+         })},
            
         submit() {
          
