@@ -1,4 +1,3 @@
-<
 <template>
    <v-app id="app" style="  width:100%;">
       <div class="containerValues">
@@ -12,19 +11,20 @@
                            append-icon="search"
                            :items="person"
                            :search-input.sync="searchPerson"
-                           @blur.native="blurPerson()"                         
+                           @blur="blurPerson($event.target.value)" 
                            hide-no-data hide-selected
-                           item-text="NomeFormart"
-                           item-value="Id"
+                           item-text="FirstName"
+                           item-value="PersonId"
                            label="No employé"
                            solo
                            return-object
                            ></v-autocomplete>
                      </v-flex>
                      <v-flex xs12 sm3>
-                        <v-text-field v-model="rapportProduction.NameEmployee"
+                        <v-text-field v-model="NameEmployee"
                            label="Name employé"
                            solo
+                           readonly
                            required></v-text-field>
                      </v-flex>
                      <v-flex xs12 sm2>
@@ -106,11 +106,11 @@
                      <v-flex xs12 sm2>
                         <v-select
                            v-model="rapportProduction.Machine"
-                           :items="items"
-                           item-text="name"
-                           item-value="code"
+                           :items="itemsMachine"
+                           item-text="Description"
+                           item-value="Id"
                            label="Machine"
-                           v-on:change="changeMachine(`${items.code}`)"
+                           v-on:change="changeMachine"
                            solo
                            ></v-select>
                      </v-flex>
@@ -127,15 +127,19 @@
                      <v-flex xs12 sm3>
                         <v-select
                            v-model="rapportProduction.Shift"
-                           :items="items"
-                           item-text="name"
-                           item-value="code"
+                           :items="itemsShift"
+                           item-text="NameFr"
+                           item-value="Id"
                            label="Shift"
+                            v-on:change="changeShift" 
                            solo
                            ></v-select>
                      </v-flex>
                      <v-flex xs12 sm3>  
                      </v-flex>
+
+                     <!-- <skuComponent> </skuComponent> -->
+
                      <v-flex xs12 sm2>  
                         SKU 1                             
                      </v-flex>
@@ -1327,7 +1331,9 @@
    //  import messes from '@/webapi/Messes.js';
       import raportProduction from '@/webApi/RapportProductionAPI.js';
      export default {    
-      data: () => ({       
+      data: () => ({ 
+               
+        NameEmployee:'',
         valid: true,
         search: '',
         dialog: false,
@@ -1337,6 +1343,8 @@
         editedItem:'',
         panel:null,
         rapportProduction:[],
+        itemsMachine:[],
+        itemsShift:[],
          headers: [
           { text: "Nom de l'employé", value: 'NameEmployee',  class: 'toptable' },
           { text: "Nb. d'heures travaillées", value: 'NumberHours', class: 'toptable' },
@@ -1373,9 +1381,13 @@
       created() {
         this.initialize()
       },
+        mounted: function () {     
+            this.getMachine(); 
+            this.getShift();
+     },
       methods: {
-        initialize() {  
-              this.values = [
+        initialize() {            
+            this.values = [
             {
               NameEmployee: 'Felipe Muniz',
               NumberHours: 35,
@@ -1393,7 +1405,7 @@
             },
            
           ]
-          ,   this.valuesComentaires = [
+             this.valuesComentaires = [
             {
               Hours: '8:45',
               Commentaires: "Ai ai ai ",
@@ -1413,15 +1425,17 @@
             
            
           ]
-        }, 
-
-        blurPerson(){
-           
-         console.log(rapportProduction.Nemployee,"opa!")
         },
-       changeMachine(a) {
+        blurPerson(Obj){  
+             this.NameEmployee =  Obj.split('-')[1];
+        },
+       changeMachine(selectObj) {
         
-         console.log("Aqui")
+         console.log(selectObj,"aqui Machine")
+      },
+        changeShift(selectObj) {
+          console.log(selectObj,"aqui")
+       
       },
          //  clear () {
          //    this.$refs.form.reset()
@@ -1429,6 +1443,19 @@
       addPersonGrid(rapportProduction){
          console.log(rapportProduction,"aqui")        
       },
+
+       getMachine() {
+        let self = this;
+         raportProduction.listMachine().then(function(res) {
+         self.itemsMachine = res;
+        })},
+
+        getShift() {
+        let self = this;
+         raportProduction.listShift().then(function(res) {
+         self.itemsShift = res;
+        })},
+
       getPerson(q) {
          let self = this;
             raportProduction.listPerson(q).then(function(res) {             
@@ -1442,9 +1469,9 @@
            alert('Metodo Save');
          }},
       
-        Ative: function (event) {
+      //   Ative: function () {
         
-           },
+      //      },
    
        formatDate (date) {
            if (!date) return null
@@ -1456,7 +1483,7 @@
         this.editedIndex = this.values.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialog = true
-        console.log($appName)
+      //   console.log($appName)
       },
       close() {
         this.dialog = false

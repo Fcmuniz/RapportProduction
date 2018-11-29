@@ -2,45 +2,31 @@
    <div id="app" style="padding:20px;margin-top:50px">    
             <v-app id="inspire" style="  width:100%;">
                <div style="width:200px; margin-left:400px;margin-top:0px;position:absolute">
-                  <table>
-                     <tr>
-                        <th>  <label > Machine:  </label> </th>
-                        <th>
-                           <v-select
-                              v-model="Machine"
-                              :items="itemsMachine"
-                              item-text="MachineID"
-                              item-value="MachineID"
-                              label="Select"
-                              solo
-                              ></v-select>
-                        </th>
-                     </tr>
-                  </table>
+                
                </div>
                <div>
                   <v-btn color="info" slot="activator" v-on:click="Ative(show = !show)" dark class="mb-2">Ajouter un nouveau </v-btn>
                   <div style="margin-left:80%;width:250px;margin-top:-53px">
-                     <v-text-field label="Recherche" class="form-control medium"  v-model="search"></v-text-field>
+                     <v-text-field label="Recherche" class="form-control medium"  append-icon="search"  single-line
+        v-model="search"></v-text-field>
                   </div>
                </div>
                <v-data-table :headers="headers"
                   :items="values"
-                  :search="search"
-                  :rows-per-page-items="[10,20]">
+                  :search="search">
                   <template slot="items" slot-scope="props" >
                      <td>{{ props.item.Date }}</td>
-                     <td>{{ props.item.MachineID }}</td>
-                     <td class="text-xs-center">{{ props.item.Shift }}</td>
-                     <td class="text-xs-center">{{ props.item.Efficacite }}</td>
+                     <td>{{ props.item.Machine.Description }}</td>
+                     <td class="text-xs-center">{{ props.item.Shift.StartTime + " - " +  props.item.Shift.EndTime }}</td>
+                     <td class="text-xs-center">{{ props.item.Efficacite  }}%</td>
                      <td>
                         <v-icon small
                            class="mr-2"
-                           v-on:click="editItem(props.item,1)">
+                           v-on:click="editItem(props.item.id)">
                            edit
                         </v-icon>
                         <v-icon small
-                           v-on:click="deleteItem(props.item,0)">
+                           v-on:click="deleteItem(props.item.id)">
                            delete
                         </v-icon>
                      </td>
@@ -97,13 +83,13 @@
           { text: 'Action', value: 'action', align: 'left', class: 'toptable', sortable: false }
         ],
          select: { code: '1', name: '241' },
-         items: [
-           { code: '1', name: '241' },
-           { code: '2', name: '201' },
-           { code: '3', name: '141' },
-           { code: '7', name: '221' },
-           { code: '8', name: '341' },
-         ],   
+         // items: [
+         //   { code: '1', name: '241' },
+         //   { code: '2', name: '201' },
+         //   { code: '3', name: '141' },
+         //   { code: '7', name: '221' },
+         //   { code: '8', name: '341' },
+         // ],   
           values: [],     
         editedIndex: -1,
        
@@ -120,8 +106,8 @@
          listRaports() {
           let self = this
           raportProduction.listRaport().then(function(res) {
-          self.values = res;
-          console.log(res,"oi")
+          self.values  = res;
+          console.log(self.values,"oi")
         })
       },  
          getMachine() {
@@ -129,43 +115,7 @@
            raportProduction.listRaport().then(function(res) {
           self.itemsMachine = res;
         })},  
-      //   initialize() {     
-         //  this.values = [
-         //    {
-         //      Date: '16/09/2018',
-         //      Machine: 241,
-         //      Shift: '7 - 19',
-         //      Efficiency: '41%',              
-         //    },
-         //    {
-         //      Date: '16/09/2018',
-         //      Machine: 241,
-         //      Shift: '19 - 7',
-         //      Efficiency: '83%',
-         //    },
-         //    {
-         //      Date: '16/09/2018',
-         //      Machine: 215,
-         //      Shift: '7 - 15',
-         //      Efficiency: '74%',             
-         //    },
-         //    {
-         //      Date: '16/09/2018',
-         //      Machine: 215,
-         //      Shift: '15 - 23',
-         //      Efficiency: '53%',             
-         //    },
-         //    {
-         //      Date: '16/09/2018',
-         //      Machine: 215,
-         //      Shift: '23 - 7',
-         //      Efficiency: '36%',             
-         //    },
-         //  ]
-          //   }, 
-         //  clear () {
-         //    this.$refs.form.reset()
-         //  },
+    
            
         submit() {
          
@@ -174,7 +124,7 @@
            alert('Metodo Save');
          }},
       
-        Ative: function (event) {
+        Ative: function () {
             this.$router.push({ name: 'RapportProductionAction', params: { item: 123 }})
             // this.editedItem ={};
             // this.seenSave =true
@@ -187,15 +137,11 @@
            return `${year}/${month}/${day}`
          },
    
-        editItem(item,valeur) {
-           console.log("Alo")
-            this.$router.push({ name: 'RapportProductionAction', params: { item: 123 }})
+        editItem(item) {
+            this.$router.push({ name: 'RapportProductionAction', params: { item: item }})
            this.show = false;   
-           this.inspire = false;      
-         //  this.editedIndex = this.values.indexOf(item)
-         //  this.editedItem = Object.assign({}, item)     
-         //  this.seenSave =false
-         //  this.seenUpdate=true
+           this.inspire = false;     
+       
         },
     
       
