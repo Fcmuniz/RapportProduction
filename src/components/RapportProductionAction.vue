@@ -138,8 +138,6 @@
                      <v-flex xs12 sm3>  
                      </v-flex>
 
-                     <!-- <skuComponent> </skuComponent> -->
-
                      <v-flex xs12 sm2>  
                         SKU 1                             
                      </v-flex>
@@ -1426,6 +1424,7 @@
            
           ]
         },
+       
         blurPerson(Obj){  
              this.NameEmployee =  Obj.split('-')[1];
         },
