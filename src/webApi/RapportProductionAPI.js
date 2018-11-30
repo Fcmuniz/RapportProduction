@@ -45,4 +45,14 @@ import axios from 'axios';
             })
       })
   },
+
+  listShiftId(id){
+    return new Promise(function(resolve, reject) {
+        axios.get(config.getAddress() + "api/Shift/GetShiftId?id=" + id).then(function (res) {
+          resolve(JSON.parse(res.data));
+          }).catch(function (err) {
+            reject(err.data);
+          })
+    })
+},
   }

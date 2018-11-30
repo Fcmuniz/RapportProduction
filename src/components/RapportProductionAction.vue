@@ -34,14 +34,10 @@
                            required></v-text-field>
                      </v-flex>
                      <v-flex xs12 sm3>
-                        <v-select
-                           v-model="rapportProduction.select"
-                           :items="items"
-                           item-text="name"
-                           item-value="code"
+                        <v-text-field v-model="rapportProduction.Substitute"                               
                            label="Remplaçant"
                            solo
-                           ></v-select>
+                           required></v-text-field>
                         <v-flex >  
                         </v-flex>
                      </v-flex>
@@ -76,33 +72,33 @@
                            </v-alert>
                         </v-data-table>
                      </v-flex>
-                       <v-dialog v-model="dialog" max-width="800px">
-                  <v-card>
-                     <v-card-title>
-                        <span class="headline">{{ formTitle }}</span>
-                     </v-card-title>
-                     <v-card-text>
-                        <v-container grid-list-md>
-                           <v-layout wrap>
-                              <v-flex xs12 sm4 md2>
-                                 <v-text-field v-model="editedItem.NameEmployee" label="Nom de l'employé"></v-text-field>
-                              </v-flex>
-                              <v-flex xs12 sm6 md4>
-                                 <v-text-field v-model="editedItem.NumberHours" label="Nb. d'heures travaillées"></v-text-field>
-                              </v-flex>
-                               <v-flex xs12 sm6 md4>
-                                 <v-text-field v-model="editedItem.Remplacant" label="Remplaçant"></v-text-field>
-                              </v-flex>
-                           </v-layout>
-                        </v-container>
-                     </v-card-text>
-                     <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn color="blue darken-1" flat v-on:click.native="close">Cancel</v-btn>
-                        <v-btn color="blue darken-1" flat v-on:click.native="save">Save</v-btn>
-                     </v-card-actions>
-                  </v-card>
-               </v-dialog>
+                     <v-dialog v-model="dialog" max-width="800px">
+                        <v-card>
+                           <v-card-title>
+                              <span class="headline">{{ formTitle }}</span>
+                           </v-card-title>
+                           <v-card-text>
+                              <v-container grid-list-md>
+                                 <v-layout wrap>
+                                    <v-flex xs12 sm4 md2>
+                                       <v-text-field v-model="editedItem.NameEmployee" label="Nom de l'employé"></v-text-field>
+                                    </v-flex>
+                                    <v-flex xs12 sm6 md4>
+                                       <v-text-field v-model="editedItem.NumberHours" label="Nb. d'heures travaillées"></v-text-field>
+                                    </v-flex>
+                                    <v-flex xs12 sm6 md4>
+                                       <v-text-field v-model="editedItem.Remplacant" label="Remplaçant"></v-text-field>
+                                    </v-flex>
+                                 </v-layout>
+                              </v-container>
+                           </v-card-text>
+                           <v-card-actions>
+                              <v-spacer></v-spacer>
+                              <v-btn color="blue darken-1" flat v-on:click.native="close">Cancel</v-btn>
+                              <v-btn color="blue darken-1" flat v-on:click.native="save">Save</v-btn>
+                           </v-card-actions>
+                        </v-card>
+                     </v-dialog>
                      <v-flex xs12 sm2>
                         <v-select
                            v-model="rapportProduction.Machine"
@@ -131,13 +127,12 @@
                            item-text="NameFr"
                            item-value="Id"
                            label="Shift"
-                            v-on:change="changeShift" 
+                           v-on:change="changeShift" 
                            solo
                            ></v-select>
                      </v-flex>
                      <v-flex xs12 sm3>  
                      </v-flex>
-
                      <v-flex xs12 sm2>  
                         SKU 1                             
                      </v-flex>
@@ -313,24 +308,65 @@
                            <v-layout row wrap>
                               <v-flex xs6>
                                  <v-card-text class="px-0">
-                                    <v-card-title style="text-align:center;background-color:#C0C0C0;width:600px" >
+                                    <v-card-title style="text-align:center;background-color:#C0C0C0;width:496px" >
                                        <v-spacer style="font-weight: bold">Temps opérer</v-spacer>
                                     </v-card-title>
-                                    <v-data-table style="width:600px" :headers="headersTemps"
-                                       :items="values"
-                                       :search="search"                                    
-                                       :rows-per-page-items="[10,20]">
-                                       <template slot="items" slot-scope="props" >
-                                          <td>{{ props.item.NameEmployee }}</td>
-                                          <td>{{ props.item.NumberHours }}</td>
-                                          <td class="text-xs-center">{{ props.item.Substitute }}</td>
-                                       </template>
-                                       <template slot="no-data">
-                                       </template>
-                                       <v-alert slot="no-results" :value="true" color="error" icon="warning">
-                                          Your search for "{{ search }}" found no results.
-                                       </v-alert>
-                                    </v-data-table>
+                                    <!-- <v-for xs6>
+                                       <v-card-text class="px-0">
+                                          <v-card-title style="text-align:center;background-color:#C0C0C0;width:600px" >
+                                             <v-spacer style="font-weight: bold">Temps opérer</v-spacer>
+                                          </v-card-title>
+                                       <v-for/>   -->
+                                    <!-- <v-layout row wrap>
+                                       <v-flex>
+                                       <v-card v-for="item in ValuesCollunsTempsOperer.Temps" :key="item.Id" >
+                                             <v-card-title>{{item.Hours}}</v-card-title>
+                                          </v-card>
+                                       </v-flex>
+                                       </v-layout> -->
+                                    <!-- <div v-for="item in items" :key="item.Id">
+                                       <v-layout row>
+                                          <v-flex xs2>item.Shift </v-flex>
+                                       </v-layout>
+                                       </div> -->
+                                    <!-- <v-layout row wrap v-for="item in ValuesCollunsTempsOperer.Temps" :key="item.Id">
+                                       <v-flex xs2>
+                                          <v-card>
+                                              <v-card-title>{{item.Hours}}</v-card-title>
+                                          </v-card>
+                                       </v-flex>
+                                       </v-layout> -->
+                                    <v-layout row>
+                                       <v-flex md1 v-for="item in ValuesCollunsTempsOperer.Temps" :key="item.Id">
+                                          <v-card>
+                                             <v-card-title >{{item.HoursFormated}}</v-card-title>
+                                          </v-card>
+                                          <v-layout row>
+                                             <v-flex md1 v-for="item2 in item.Arrets" :key="item2.Id">
+                                                <v-card>
+                                                   <v-card-title >{{item2.Duree}} </v-card-title>
+                                                </v-card>
+                                             </v-flex>
+                                          </v-layout>
+                                       </v-flex>
+                                       <v-flex md1>
+                                          <v-card>
+                                             <v-card-title >Total</v-card-title>
+                                          </v-card>
+                                          <v-card-title >{{TotalTempsOpere}}</v-card-title>
+                                       </v-flex>
+                                    </v-layout>
+                                    <!-- <div v-for="item in ValuesCollunsTempsOperer.Temps" :key="item.Id">
+                                       <v-layout row>
+                                          <v-flex xs2>{{item.Hours}}  </v-flex>
+                                       </v-layout>
+                                       </div> -->
+                                    <!-- <v-card v-for="item in ValuesCollunsTempsOperer.Temps" :key="item.Id" >
+                                       <v-card-title>{{item.Hours}}</v-card-title>
+                                       </v-card> 
+                                        <v-card v-for="item in ValuesCollunsTempsOperer" :key="item.Id" >
+                                       <v-card-title>s</v-card-title> 
+                                       </v-card>            -->
                                  </v-card-text>
                               </v-flex>
                               <v-flex xs6>
@@ -376,7 +412,6 @@
                                  </v-card-text>
                               </v-flex>
                            </v-layout>
-                         
                            <br><br>
                            <template>
                               <div>
@@ -389,109 +424,110 @@
                                     <v-expansion-panel-content>
                                        <div slot="header">SKU1</div>
                                        <v-card>
-                                             <table class="blueTable">
-                              <tbody>
-                                 <tr>
-                                    <td class="tableBlueHead">SKU 1 </td>
-                                    <td class="tableBlueHead">Provient</td>
-                                    <td class="tableBlueHead">8:45</td>
-                                    <td class="tableBlueHead">10:45</td>
-                                    <td class="tableBlueHead">12:45</td>
-                                    <td class="tableBlueHead">14:45</td>
-                                    <td class="tableBlueHead">16:45</td>
-                                    <td class="tableBlueHead">18:45</td>
-                                    <td class="tableBlueHead">Total</td>
-                                 </tr>
-                                 <tr>
-                                    <td class="tableBlueHead">Montant transféré aux 2hrs <br> (Nb produit(E A))</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                 </tr>
-                                 <tr>
-                                    <td class="tableBlueHead">Montant transféré aux 2hrs <br> (Nb produit(E A))</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                 </tr>
-                                 <tr>
-                                    <td class="tableBlueHead">Nb Caisses prod (B)</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                 </tr>
-                                 <tr>
-                                    <td class="tableBlueHead">Nb PMD prod (B)</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                 </tr>
-                                 <tr>
-                                    <td class="tableBlueHead">Total (A+B) C</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                 </tr>
-                                 <tr>
-                                    <td class="tableBlueHead">Objectif pour 2 hrs (D)</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                 </tr>
-                                 <tr>
-                                    <td class="tableBlueHead">Efficacité % (C/D)</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                 </tr>
-                                 <tr>
-                                    <td class="tableBlueHead">(1-Eff %) x 120(Mins)</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                 </tr>
-                              </tbody>
-                           </table><br><br>
+                                          <table class="blueTable">
+                                             <tbody>
+                                                <tr>
+                                                   <td class="tableBlueHead">SKU 1 </td>
+                                                   <td class="tableBlueHead">Provient</td>
+                                                   <td class="tableBlueHead">8:45</td>
+                                                   <td class="tableBlueHead">10:45</td>
+                                                   <td class="tableBlueHead">12:45</td>
+                                                   <td class="tableBlueHead">14:45</td>
+                                                   <td class="tableBlueHead">16:45</td>
+                                                   <td class="tableBlueHead">18:45</td>
+                                                   <td class="tableBlueHead">Total</td>
+                                                </tr>
+                                                <tr>
+                                                   <td class="tableBlueHead">Montant transféré aux 2hrs <br> (Nb produit(E A))</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                   <td class="tableBlueHead">Montant transféré aux 2hrs <br> (Nb produit(E A))</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                   <td class="tableBlueHead">Nb Caisses prod (B)</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                   <td class="tableBlueHead">Nb PMD prod (B)</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                   <td class="tableBlueHead">Total (A+B) C</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                   <td class="tableBlueHead">Objectif pour 2 hrs (D)</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                   <td class="tableBlueHead">Efficacité % (C/D)</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                   <td class="tableBlueHead">(1-Eff %) x 120(Mins)</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                </tr>
+                                             </tbody>
+                                          </table>
+                                          <br><br>
                                           <table class="TableForm">
                                              <tr>
                                                 <td>Consommation de rouleaux(Z) &nbsp; </td>
@@ -608,110 +644,111 @@
                                     </v-expansion-panel-content>
                                     <v-expansion-panel-content>
                                        <div slot="header">SKU2</div>
-                                       <v-card>  <table class="blueTable">
-                              <tbody>
-                                 <tr>
-                                    <td class="tableBlueHead">SKU 2 </td>
-                                    <td class="tableBlueHead">Provient</td>
-                                    <td class="tableBlueHead">8:45</td>
-                                    <td class="tableBlueHead">10:45</td>
-                                    <td class="tableBlueHead">12:45</td>
-                                    <td class="tableBlueHead">14:45</td>
-                                    <td class="tableBlueHead">16:45</td>
-                                    <td class="tableBlueHead">18:45</td>
-                                    <td class="tableBlueHead">Total</td>
-                                 </tr>
-                                 <tr>
-                                    <td class="tableBlueHead">Montant transféré aux 2hrs <br> (Nb produit(E A))</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                 </tr>
-                                 <tr>
-                                    <td class="tableBlueHead">Montant transféré aux 2hrs <br> (Nb produit(E A))</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                 </tr>
-                                 <tr>
-                                    <td class="tableBlueHead">Nb Caisses prod (B)</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                 </tr>
-                                 <tr>
-                                    <td class="tableBlueHead">Nb PMD prod (B)</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                 </tr>
-                                 <tr>
-                                    <td class="tableBlueHead">Total (A+B) C</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                 </tr>
-                                 <tr>
-                                    <td class="tableBlueHead">Objectif pour 2 hrs (D)</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                 </tr>
-                                 <tr>
-                                    <td class="tableBlueHead">Efficacité % (C/D)</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                 </tr>
-                                 <tr>
-                                    <td class="tableBlueHead">(1-Eff %) x 120(Mins)</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                 </tr>
-                              </tbody>
-                           </table>
-                           <br><br>
+                                       <v-card>
+                                          <table class="blueTable">
+                                             <tbody>
+                                                <tr>
+                                                   <td class="tableBlueHead">SKU 2 </td>
+                                                   <td class="tableBlueHead">Provient</td>
+                                                   <td class="tableBlueHead">8:45</td>
+                                                   <td class="tableBlueHead">10:45</td>
+                                                   <td class="tableBlueHead">12:45</td>
+                                                   <td class="tableBlueHead">14:45</td>
+                                                   <td class="tableBlueHead">16:45</td>
+                                                   <td class="tableBlueHead">18:45</td>
+                                                   <td class="tableBlueHead">Total</td>
+                                                </tr>
+                                                <tr>
+                                                   <td class="tableBlueHead">Montant transféré aux 2hrs <br> (Nb produit(E A))</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                   <td class="tableBlueHead">Montant transféré aux 2hrs <br> (Nb produit(E A))</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                   <td class="tableBlueHead">Nb Caisses prod (B)</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                   <td class="tableBlueHead">Nb PMD prod (B)</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                   <td class="tableBlueHead">Total (A+B) C</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                   <td class="tableBlueHead">Objectif pour 2 hrs (D)</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                   <td class="tableBlueHead">Efficacité % (C/D)</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                   <td class="tableBlueHead">(1-Eff %) x 120(Mins)</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                </tr>
+                                             </tbody>
+                                          </table>
+                                          <br><br>
                                           <table class="TableForm">
                                              <tr>
                                                 <td>Consommation de rouleaux(Z) &nbsp; </td>
@@ -831,109 +868,110 @@
                                     <v-expansion-panel-content>
                                        <div slot="header">SKU3</div>
                                        <v-card>
-                                             <table class="blueTable">
-                              <tbody>
-                                 <tr>
-                                    <td class="tableBlueHead">SKU 3 </td>
-                                    <td class="tableBlueHead">Provient</td>
-                                    <td class="tableBlueHead">8:45</td>
-                                    <td class="tableBlueHead">10:45</td>
-                                    <td class="tableBlueHead">12:45</td>
-                                    <td class="tableBlueHead">14:45</td>
-                                    <td class="tableBlueHead">16:45</td>
-                                    <td class="tableBlueHead">18:45</td>
-                                    <td class="tableBlueHead">Total</td>
-                                 </tr>
-                                 <tr>
-                                    <td class="tableBlueHead">Montant transféré aux 2hrs <br> (Nb produit(E A))</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                 </tr>
-                                 <tr>
-                                    <td class="tableBlueHead">Montant transféré aux 2hrs <br> (Nb produit(E A))</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                 </tr>
-                                 <tr>
-                                    <td class="tableBlueHead">Nb Caisses prod (B)</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                 </tr>
-                                 <tr>
-                                    <td class="tableBlueHead">Nb PMD prod (B)</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                 </tr>
-                                 <tr>
-                                    <td class="tableBlueHead">Total (A+B) C</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                 </tr>
-                                 <tr>
-                                    <td class="tableBlueHead">Objectif pour 2 hrs (D)</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                 </tr>
-                                 <tr>
-                                    <td class="tableBlueHead">Efficacité % (C/D)</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                 </tr>
-                                 <tr>
-                                    <td class="tableBlueHead">(1-Eff %) x 120(Mins)</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                 </tr>
-                              </tbody>
-                           </table><br><br>
+                                          <table class="blueTable">
+                                             <tbody>
+                                                <tr>
+                                                   <td class="tableBlueHead">SKU 3 </td>
+                                                   <td class="tableBlueHead">Provient</td>
+                                                   <td class="tableBlueHead">8:45</td>
+                                                   <td class="tableBlueHead">10:45</td>
+                                                   <td class="tableBlueHead">12:45</td>
+                                                   <td class="tableBlueHead">14:45</td>
+                                                   <td class="tableBlueHead">16:45</td>
+                                                   <td class="tableBlueHead">18:45</td>
+                                                   <td class="tableBlueHead">Total</td>
+                                                </tr>
+                                                <tr>
+                                                   <td class="tableBlueHead">Montant transféré aux 2hrs <br> (Nb produit(E A))</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                   <td class="tableBlueHead">Montant transféré aux 2hrs <br> (Nb produit(E A))</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                   <td class="tableBlueHead">Nb Caisses prod (B)</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                   <td class="tableBlueHead">Nb PMD prod (B)</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                   <td class="tableBlueHead">Total (A+B) C</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                   <td class="tableBlueHead">Objectif pour 2 hrs (D)</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                   <td class="tableBlueHead">Efficacité % (C/D)</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                   <td class="tableBlueHead">(1-Eff %) x 120(Mins)</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                </tr>
+                                             </tbody>
+                                          </table>
+                                          <br><br>
                                           <table class="TableForm">
                                              <tr>
                                                 <td>Consommation de rouleaux(Z) &nbsp; </td>
@@ -1053,109 +1091,110 @@
                                     <v-expansion-panel-content>
                                        <div slot="header">SKU4</div>
                                        <v-card>
-                                             <table class="blueTable">
-                              <tbody>
-                                 <tr>
-                                    <td class="tableBlueHead">SKU 4 </td>
-                                    <td class="tableBlueHead">Provient</td>
-                                    <td class="tableBlueHead">8:45</td>
-                                    <td class="tableBlueHead">10:45</td>
-                                    <td class="tableBlueHead">12:45</td>
-                                    <td class="tableBlueHead">14:45</td>
-                                    <td class="tableBlueHead">16:45</td>
-                                    <td class="tableBlueHead">18:45</td>
-                                    <td class="tableBlueHead">Total</td>
-                                 </tr>
-                                 <tr>
-                                    <td class="tableBlueHead">Montant transféré aux 2hrs <br> (Nb produit(E A))</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                 </tr>
-                                 <tr>
-                                    <td class="tableBlueHead">Montant transféré aux 2hrs <br> (Nb produit(E A))</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                 </tr>
-                                 <tr>
-                                    <td class="tableBlueHead">Nb Caisses prod (B)</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                 </tr>
-                                 <tr>
-                                    <td class="tableBlueHead">Nb PMD prod (B)</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                 </tr>
-                                 <tr>
-                                    <td class="tableBlueHead">Total (A+B) C</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                 </tr>
-                                 <tr>
-                                    <td class="tableBlueHead">Objectif pour 2 hrs (D)</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                 </tr>
-                                 <tr>
-                                    <td class="tableBlueHead">Efficacité % (C/D)</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                 </tr>
-                                 <tr>
-                                    <td class="tableBlueHead">(1-Eff %) x 120(Mins)</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                 </tr>
-                              </tbody>
-                           </table><br><br>
+                                          <table class="blueTable">
+                                             <tbody>
+                                                <tr>
+                                                   <td class="tableBlueHead">SKU 4 </td>
+                                                   <td class="tableBlueHead">Provient</td>
+                                                   <td class="tableBlueHead">8:45</td>
+                                                   <td class="tableBlueHead">10:45</td>
+                                                   <td class="tableBlueHead">12:45</td>
+                                                   <td class="tableBlueHead">14:45</td>
+                                                   <td class="tableBlueHead">16:45</td>
+                                                   <td class="tableBlueHead">18:45</td>
+                                                   <td class="tableBlueHead">Total</td>
+                                                </tr>
+                                                <tr>
+                                                   <td class="tableBlueHead">Montant transféré aux 2hrs <br> (Nb produit(E A))</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                   <td class="tableBlueHead">Montant transféré aux 2hrs <br> (Nb produit(E A))</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                   <td class="tableBlueHead">Nb Caisses prod (B)</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                   <td class="tableBlueHead">Nb PMD prod (B)</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                   <td class="tableBlueHead">Total (A+B) C</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                   <td class="tableBlueHead">Objectif pour 2 hrs (D)</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                   <td class="tableBlueHead">Efficacité % (C/D)</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                   <td class="tableBlueHead">(1-Eff %) x 120(Mins)</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                   <td>&nbsp;</td>
+                                                </tr>
+                                             </tbody>
+                                          </table>
+                                          <br><br>
                                           <table class="TableForm">
                                              <tr>
                                                 <td>Consommation de rouleaux(Z) &nbsp; </td>
@@ -1276,7 +1315,6 @@
                               </div>
                            </template>
                         </v-container>
-                        
                      </template>
                   </v-layout>
                </template>
@@ -1330,7 +1368,8 @@
       import raportProduction from '@/webApi/RapportProductionAPI.js';
      export default {    
       data: () => ({ 
-               
+        TotalTempsOpere:0,
+        ValuesCollunsTempsOperer:[],
         NameEmployee:'',
         valid: true,
         search: '',
@@ -1432,9 +1471,16 @@
         
          console.log(selectObj,"aqui Machine")
       },
-        changeShift(selectObj) {
-          console.log(selectObj,"aqui")
-       
+        changeShift(selectObj) { 
+         let self = this;
+            raportProduction.listShiftId(selectObj).then(function(res) {
+            self.ValuesCollunsTempsOperer = res;
+            self.ValuesCollunsTempsOperer.Temps.map(function(item) {
+            item.Arrets.map(function(item2) {
+   	         self.TotalTempsOpere += item2.Duree
+           })
+          }) 
+         })
       },
          //  clear () {
          //    this.$refs.form.reset()
@@ -1442,19 +1488,19 @@
       addPersonGrid(rapportProduction){
          console.log(rapportProduction,"aqui")        
       },
-
+   
        getMachine() {
         let self = this;
          raportProduction.listMachine().then(function(res) {
          self.itemsMachine = res;
         })},
-
+   
         getShift() {
         let self = this;
          raportProduction.listShift().then(function(res) {
          self.itemsShift = res;
         })},
-
+   
       getPerson(q) {
          let self = this;
             raportProduction.listPerson(q).then(function(res) {             
