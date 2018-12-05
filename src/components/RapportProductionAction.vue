@@ -72,7 +72,7 @@
                            </v-alert>
                         </v-data-table>
                      </v-flex>
-                     <v-dialog v-model="dialog" max-width="800px">
+                     <v-dialog v-model="dialog" persistent max-width="800px">
                         <v-card>
                            <v-card-title>
                               <span class="headline">{{ formTitle }}</span>
@@ -94,8 +94,50 @@
                            </v-card-text>
                            <v-card-actions>
                               <v-spacer></v-spacer>
-                              <v-btn color="blue darken-1" flat v-on:click.native="close">Cancel</v-btn>
+                              <v-btn color="blue darken-1" flat v-on:click.native="dialog = false">Fermer</v-btn>
                               <v-btn color="blue darken-1" flat v-on:click.native="save">Save</v-btn>
+                           </v-card-actions>
+                        </v-card>
+                     </v-dialog>
+                      <v-dialog v-model="dialogTempArret" persistent  max-width="800px">
+                        <v-card>
+                           <v-card-title>
+                              <span class="headline">{{ formTitleArret }}</span>
+                           </v-card-title>
+                           <v-card-text>
+                              <v-container grid-list-md>
+                                 <v-layout wrap>
+                                    <v-flex xs12 sm4 md2>
+                                       <v-select
+                                          v-model="editedTempArret.RaisonName"
+                                          :items="itemsRaison"
+                                          item-text="Description"
+                                          item-value="Id"
+                                          label="Raison"
+                                          solo
+                           >           </v-select>
+                                    </v-flex>
+                                    <v-flex xs12 sm6 md4>
+                                        <v-select
+                                          v-model="editedTempArret.Hours"
+                                          :items="ValuesCollunsTemps"
+                                          item-text="Hours"
+                                          item-value="Id"
+                                          label="Hours"
+                                          solo
+                           >           </v-select>
+                                    </v-flex>
+                                    <v-flex xs12 sm6 md4>
+                                       <v-text-field v-model="editedTempArret.Duree" label="Duree"></v-text-field>
+                                    </v-flex>
+                                 </v-layout>
+                              </v-container>
+                           </v-card-text>
+                           <v-card-actions>
+                              <v-spacer></v-spacer>
+                                <v-btn color="blue darken-1" flat @click="dialogTempArret = false">Fermer</v-btn>
+                               <v-btn v-if="seenSave" v-on:click="submitArret" color="success">Enregistrer</v-btn>
+                               <v-btn v-if="seenUpdate" v-on:click="updateItem" color="success">Update</v-btn>
                            </v-card-actions>
                         </v-card>
                      </v-dialog>
@@ -337,14 +379,14 @@
                                        </v-flex>
                                        </v-layout> -->
                                     <v-layout row>
-                                       <v-flex md1 v-for="item in ValuesCollunsTempsOperer.Temps" :key="item.Id">
+                                       <v-flex md1 v-for="item in ValuesCollunsTemps" :key="item.Id">
                                           <v-card>
                                              <v-card-title >{{item.HoursFormated}}</v-card-title>
                                           </v-card>
                                           <v-layout row>
-                                             <v-flex md1 v-for="item2 in item.Arrets" :key="item2.Id">
+                                             <v-flex >
                                                 <v-card>
-                                                   <v-card-title >{{item2.Duree}} </v-card-title>
+                                                   <v-card-title >120 </v-card-title>
                                                 </v-card>
                                              </v-flex>
                                           </v-layout>
@@ -353,7 +395,7 @@
                                           <v-card>
                                              <v-card-title >Total</v-card-title>
                                           </v-card>
-                                          <v-card-title >{{TotalTempsOpere}}</v-card-title>
+                                          <v-card-title >720</v-card-title>
                                        </v-flex>
                                     </v-layout>
                                     <!-- <div v-for="item in ValuesCollunsTempsOperer.Temps" :key="item.Id">
@@ -374,12 +416,21 @@
                                     <v-card-title style="text-align:center;background-color:#C0C0C0;width:600px" >
                                        <v-spacer style="font-weight: bold">Commentaires et Actions</v-spacer>
                                     </v-card-title>
-                                    <v-data-table style="width:600px" 
-                                       :items="valuesComentaires"
+                                    <v-data-table style="width:600px"
+                                       :headers="ValuesHeaderTemp" 
+                                       :items="ValuesCollunsTempsOperer"
                                        :search="search"   >
                                        <template slot="items" slot-scope="props" >
-                                          <td>{{ props.item.Hours }}</td>
-                                          <td>{{ props.item.Commentaires }}</td>
+                                          <td>{{ props.item.Description }}</td>
+                                          <td>{{ props.item.Value1 }}</td>
+                                          <td>{{ props.item.Value2 }}</td>
+                                          <td>{{ props.item.Value3 }}</td>
+                                          <td>{{ props.item.Value4 }}</td>
+                                          <td>{{ props.item.Value5 }}</td>
+                                          <td>{{ props.item.Value6 }}</td>
+                                          <td>{{ props.item.Total }}</td>
+                                        
+                                          
                                        </template>
                                        <template slot="no-data">
                                        </template>
@@ -389,26 +440,94 @@
                                     </v-data-table>
                                  </v-card-text>
                               </v-flex>
-                              <v-flex  xs3>
+                              <v-flex  xs6>
                                  <v-card-text>
-                                    <v-card-title style="text-align:center;background-color:#C0C0C0;width:600px" >
+                                    <v-card-title style="text-align:center;background-color:#C0C0C0;width:890px" >
                                        <v-spacer style="font-weight: bold">Temps d'arrêts en minute</v-spacer>
                                     </v-card-title>
-                                    <v-data-table style="width:600px" :headers="headersTemps"
-                                       :items="values"
-                                       :search="search"                                    
-                                       :rows-per-page-items="[10,20]">
+
+  <v-toolbar flat color="white">  
+      <v-spacer></v-spacer>    
+        <v-btn color="primary"  v-on:click="newArret" dark class="mb-2">Nouveu Arret</v-btn>
+
+    </v-toolbar>
+                                    <v-data-table style="width:890px"
+                                       :headers="ValuesHeaderTemp" 
+                                       class="elevation-1"
+                                       hide-actions
+                                       :items="ValuesCollunsTempsOperer">
                                        <template slot="items" slot-scope="props" >
-                                          <td>{{ props.item.NameEmployee }}</td>
-                                          <td>{{ props.item.NumberHours }}</td>
-                                          <td class="text-xs-center">{{ props.item.Substitute }}</td>
+                                          <td>{{ props.item.Description }}</td>
+                                          <td>{{ props.item.Value1 }}</td>
+                                          <td>{{ props.item.Value2 }}</td>
+                                          <td>{{ props.item.Value3 }}</td>
+                                          <td>{{ props.item.Value4 }}</td>
+                                          <td>{{ props.item.Value5 }}</td>
+                                          <td>{{ props.item.Value6 }}</td>
+                                           <td>{{ props.item.TotalColumn }}</td>
+                                            <td>
+                        <v-icon small
+                           class="mr-2"
+                           v-on:click="editItemArret(props.item.ShiftId)">
+                           edit
+                        </v-icon>
+                        <v-icon small
+                           v-on:click="deleteItemArret(props.item.id)">
+                           delete
+                        </v-icon>
+                     </td>
                                        </template>
-                                       <template slot="no-data">
-                                       </template>
-                                       <v-alert slot="no-results" :value="true" color="error" icon="warning">
-                                          Your search for "{{ search }}" found no results.
-                                       </v-alert>
+                                     
                                     </v-data-table>
+
+                                    
+                                    <!-- <v-layout row>
+                                          <v-flex md1>
+                                          <v-card>
+                                             <v-card-title >Rasion</v-card-title>
+                                          </v-card>  
+                                     
+                                       <v-card v-for="item in ValuesCollunsTempsOperer" :key="item.Id" >
+                                                <v-card-title >{{item.Description}} </v-card-title>     
+                                               <v-layout row>
+                                            
+                                          </v-layout>   
+   
+                                       </v-card>
+                                                                      
+                                       </v-flex>
+                                      
+                                        <v-flex md1 v-for="item in ValuesCollunsTemps" :key="item.Id">
+                                          <v-card>
+                                             <v-card-title >{{item.HoursFormated}}</v-card-title>
+                                          </v-card>
+                                         <v-layout row>
+                                          <v-flex >
+                                             <v-card v-for="item in ValuesCollunsTempsOperer" :key="item.Id">
+                                                   <v-card-text>{{item.Value1}}</v-card-text>
+                                                   <v-card-text>{{item.Value2}}</v-card-text>
+                                                   <v-card-text>{{item.Value3}}</v-card-text>
+                                                   <v-card-text>{{item.Value4}}</v-card-text>
+                                                   <v-card-text>{{item.Value5}}</v-card-text>
+                                                   <v-card-text>{{item.Value6}}</v-card-text>
+                                                   <v-card-text>{{item.Total}}</v-card-text>
+                                             </v-card>
+                                          </v-flex>
+                                       </v-layout>
+                                       </v-flex>
+                                       <v-flex md1>
+                                            <v-card>
+                                            <v-card-title >Total</v-card-title>
+                                             </v-card>
+                                          <v-card v-for="item in ValuesCollunsTempsOperer" :key="item.Id">                                           
+                                              <v-card-title >{{item.TotalColumn}}</v-card-title>
+                                          </v-card>
+                                         
+                                       </v-flex>
+
+                                       
+                                      
+                                    </v-layout> -->
                                  </v-card-text>
                               </v-flex>
                            </v-layout>
@@ -1368,20 +1487,60 @@
       import raportProduction from '@/webApi/RapportProductionAPI.js';
      export default {    
       data: () => ({ 
+        seenSave:false,
+        seenUpdate:false,
         TotalTempsOpere:0,
+        editedTempArret:'',
         ValuesCollunsTempsOperer:[],
         NameEmployee:'',
         valid: true,
         search: '',
         dialog: false,
+        dialogTempArret:false,
         btnDisable: true,
         searchPerson:'',
         person:[],
+        itemsRaison:[],
         editedItem:'',
         panel:null,
         rapportProduction:[],
         itemsMachine:[],
+        ValuesCollunsTemps:[],
         itemsShift:[],
+        formTitleArret:'',
+        ValuesHeaderTemp:[
+         {
+            text: "Raison", value: 'raison',  class: 'toptable' 
+         },
+         {
+            text: "8:45", value: 'Value1',  class: 'toptable' 
+         },
+          {
+            text: "10:45", value: 'Value2',  class: 'toptable' 
+         },
+         {
+            text: "12:45", value: 'Value3',  class: 'toptable'   
+         },         
+         {
+            text: "14:45", value: 'Value4',  class: 'toptable' 
+         },         
+         {
+            text: "16:45", value: 'Value5',  class: 'toptable' 
+         },
+         {
+            text: "18:45", value: 'Value6',  class: 'toptable' 
+         },
+         {
+            text: "Total", value: 'total',  class: 'toptable' 
+         },
+         ,
+         {
+            text: "Actions", value: '',  class: 'toptable' 
+         }
+
+
+        ],
+
          headers: [
           { text: "Nom de l'employé", value: 'NameEmployee',  class: 'toptable' },
           { text: "Nb. d'heures travaillées", value: 'NumberHours', class: 'toptable' },
@@ -1412,15 +1571,19 @@
       },
       computed: {
            formTitle() {
-        return this.editedIndex === -1 ? 'New ' : 'Edit '
-      }
+        return this.editedIndex === -1 ? 'New  ' : 'Edit   '
+      },
+      //   formTitleArret() {
+      //   return this.editedTempArret === -1 ? 'New Temps ' : 'Edit Temps  '
+      // }
        },
       created() {
         this.initialize()
       },
-        mounted: function () {     
-            this.getMachine(); 
-            this.getShift();
+      mounted: function () {    
+         this.getMachine(); 
+         this.getShift();
+         this.getRaison();
      },
       methods: {
         initialize() {            
@@ -1472,15 +1635,23 @@
          console.log(selectObj,"aqui Machine")
       },
         changeShift(selectObj) { 
+         this.TotalTempsOpere = 0;
          let self = this;
             raportProduction.listShiftId(selectObj).then(function(res) {
             self.ValuesCollunsTempsOperer = res;
-            self.ValuesCollunsTempsOperer.Temps.map(function(item) {
-            item.Arrets.map(function(item2) {
-   	         self.TotalTempsOpere += item2.Duree
-           })
-          }) 
+            console.log(self.ValuesCollunsTempsOperer,"Valores")
+         //    self.ValuesCollunsTempsOperer.Temps.map(function(item) {
+         //    item.Arrets.map(function(item2) {
+   	   //     self.TotalTempsOpere += item2.Duree
+         //   })
+         //  }) 
          })
+
+         let selfTemps = this;
+         raportProduction.listTempsId(selectObj).then(function(res) {
+         selfTemps.ValuesCollunsTemps = res;
+        })
+
       },
          //  clear () {
          //    this.$refs.form.reset()
@@ -1489,13 +1660,13 @@
          console.log(rapportProduction,"aqui")        
       },
    
-       getMachine() {
+      getMachine() {
         let self = this;
          raportProduction.listMachine().then(function(res) {
          self.itemsMachine = res;
         })},
    
-        getShift() {
+      getShift() {
         let self = this;
          raportProduction.listShift().then(function(res) {
          self.itemsShift = res;
@@ -1506,17 +1677,41 @@
             raportProduction.listPerson(q).then(function(res) {             
             self.person = res;            
          })},
+
+      getRaison(){
+            let self = this;
+             raportProduction.listRaison().then(function(res) {             
+            self.itemsRaison = res;      
+         })},
            
-        submit() {
+        submitArret() {
          
         if (this.$refs.form.validate())
-         {
-           alert('Metodo Save');
-         }},
-      
-      //   Ative: function () {
-        
-      //      },
+        {
+           this.saveArret()
+        }},
+         saveArret() {
+         let self=this;
+         //TODO Implementar o saveArret no WebAPI
+         raportProduction.saveArret(this.editedTempArret).then(function(res) {
+          
+         });
+                    
+       },
+        //TODO Implementar o deleteArret no WebAPI
+         deleteItem(item) {
+         if (confirm('Êtes - vous sûr de bien vouloir supprimer cet élément ?')) {
+            // raportProduction.deleteArret(item.Id).then(function(res){
+            // })
+         }
+       },
+        deleteItemArret(item) {
+         if (confirm('Êtes - vous sûr de bien vouloir supprimer cet élément ?')) {
+            raportProduction.deleteArret(item.Id).then(function(res){
+            })
+         }
+       },
+   
    
        formatDate (date) {
            if (!date) return null
@@ -1530,6 +1725,34 @@
         this.dialog = true
       //   console.log($appName)
       },
+
+   newArret(item) {
+        this.formTitleArret ='New Temps ' 
+        this.seenUpdate =false
+        this.seenSave =true
+        this.editedTempArret = this.values.indexOf(item)
+        this.editedTempArret = Object.assign({}, item)
+        this.dialogTempArret = true
+      //   console.log($appName)
+      },
+       editItemArret(item) {
+        this.formTitleArret ='Edit Temps '
+        this.seenUpdate =true
+        this.seenSave =false
+        this.editedTempArret = this.values.indexOf(item)
+        this.editedTempArret = Object.assign({}, item)
+        this.dialogTempArret = true
+      //   console.log($appName)
+      },
+       updateItem() {
+        if (this.$refs.form.validate()) {
+          let self=this;
+           raportProduction.updateItem(item.Id).then(function(res){
+          
+         });
+         this.close()
+   
+       }},
       close() {
         this.dialog = false
         setTimeout(() => {

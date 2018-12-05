@@ -55,4 +55,58 @@ import axios from 'axios';
           })
     })
 },
-  }
+
+  //////////////////////////////Arrets////////////////////////////////
+
+  listArrets(){
+    return new Promise(function(resolve, reject) {
+        axios.get(config.getAddress() + "api/Arret/GetArrets").then(function (res) {
+          resolve(JSON.parse(res.data));
+          }).catch(function (err) {
+            reject(err.data);
+          })
+    })
+},
+
+// deleteReservation(Id){
+//   return new Promise(function(resolve,reject){
+//       const params = new URLSearchParams();
+//       params.append('Id', Id);
+//       axios.post( config.getAddress() +'cliente/DelCli', params).then(function(res){
+//           resolve('ok');
+//       })
+//       .catch(function(error){
+//         reject('err');
+   
+//       });
+//     })
+// }
+
+
+//////////////////////////////Temps////////////////////////////////
+
+listTempsId(id){
+  return new Promise(function(resolve, reject) {
+      axios.get(config.getAddress() + "api/Temps/GetTempsId?id="+ id).then(function (res) {
+        resolve(JSON.parse(res.data));
+        }).catch(function (err) {
+          reject(err.data);
+        })
+  })
+},
+
+////////////////////////////Rison///////////////////////////////
+
+
+listRaison(){
+  return new Promise(function(resolve, reject) {
+      axios.get(config.getAddress() + "api/Raison/GetRaison").then(function (res) {
+        resolve(JSON.parse(res.data));
+        }).catch(function (err) {
+          reject(err.data);
+        })
+  })
+},
+
+
+}
